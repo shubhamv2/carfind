@@ -1,9 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCartShopping, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
-import { NavLink, Link } from "react-router-dom"
+import { NavLink, Link, useLocation } from "react-router-dom"
 import { useCarContext } from "../context/carContext"
+import { useEffect } from "react";
 export default function Navbar() {
-    const { cartItems } = useCarContext();
+    const location = useLocation();
+    const { cartItems, searchItems, setItems } = useCarContext();
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+    }
+    const clearInput = () =>{
+        setItems("");
+    }
+    useEffect(()=>{
+        clearInput();
+    },[location])
     return (
         <header className="w-full h-16 shadow-md">
             <nav className="flex mx-auto items-center w-full max-w-7xl h-full px-5 justify-between">
@@ -19,9 +30,11 @@ export default function Navbar() {
                         <li><NavLink className="p-3" to="/">Contact us</NavLink></li>
                         <li><NavLink className="p-3" to="/">Services</NavLink></li>
                     </ul>
-                    <form className="flex ml-5">
-                        <input placeholder="Search item here..." type="text" className="outline-none px-3 py-1   border rounded-l-md" />
-                        <button className="text-white bg-black px-3 py-0.5 rounded-r-md"> <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                    <form className="flex ml-5" onSubmit={handleSearchSubmit}>
+                        <input value={searchItems} onChange={(e)=>{
+                            setItems(e.target.value);
+                        }} placeholder="Search item here..." type="text" className="outline-none px-3 py-1   border rounded-l-md text-md" />
+                        <button type="submit" className="text-white bg-black px-3 py-0.5 rounded-r-md"> <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                     </form>
                 </div>
                 <div className="relative cursor-pointer">

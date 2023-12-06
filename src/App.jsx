@@ -6,7 +6,8 @@ import { Outlet} from "react-router-dom";
 function App() {
     const [carData, setCarData] = useState([]);
     const [cartItems, setCartItems] = useState(0);
-  
+    const [searchItems, setSearchItem] = useState("");
+
     function addToCart(id){
         setCartItems((prev)=>prev+1);
         setCarData((prevData)=>prevData.map((carInfo)=>carInfo.id === id?{...carInfo,inCart:true}:carInfo)); 
@@ -16,6 +17,10 @@ function App() {
         setCarData((prevData)=> prevData.map((carInfo)=>carInfo.id === id?{...carInfo, inCart: false}:carInfo));
         console.log("cart item removed",id);
     }
+    function setItems(value){
+        setSearchItem(value);
+    }
+    
     
     useEffect(() => {
         const storedCars = localStorage.getItem('cars');
@@ -62,7 +67,7 @@ function App() {
     }, [cartItems,carData]);
     return (
 
-        <CarContextProvider value={{carData,cartItems,addToCart,removeFromCart}}>
+        <CarContextProvider value={{carData,cartItems,addToCart,removeFromCart, searchItems, setItems}}>
             <Navbar />
             <Outlet/>
         </CarContextProvider>

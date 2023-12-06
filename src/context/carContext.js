@@ -5,6 +5,8 @@ export const carContext = createContext({
     cartItems:0,
     addToCart:()=>{},
     removeFromCart:()=>{},
+    searchItems:"",
+    setItems: ()=>{},
 });
 
 
