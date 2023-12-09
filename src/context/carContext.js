@@ -2,11 +2,12 @@ import { useContext,createContext } from "react";
 
 export const carContext = createContext({
     carData:[],
-    cartItems:0,
+    cartItemsCount:0,
+    addedCartData:[],
     addToCart:()=>{},
     removeFromCart:()=>{},
     searchItems:"",
-    setItems: ()=>{},
+    setSearchItemsFunc: ()=>{},
 });
 
 

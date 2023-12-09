@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 export default function Card({ data, addToCart}) {
     return (
         <div className="">
-            <Link to="/">
+            <Link to={`/product/${data.id}`}>
                 <div>
                     <div className="">
                         <img alt="" src={data.image} className="w-full h-60 object-cover" />

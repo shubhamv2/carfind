@@ -10,8 +10,8 @@ export default function Cartcard({ data, removeFromCart }) {
         setUpdateIncDec((prev) => prev - 1);
     }
     return (
-        <div className="flex rounded-lg overflow-hidden w-full">
-            <div className="w-1/2 h-72">
+        <div className="flex rounded-lg overflow-hidden w-full border border-red-500">
+            <div className="w-3/4 h-72">
                 <img src={data.image} alt="" className="w-full object-cover h-full" />
             </div>
             <div className="px-4">
@@ -34,7 +34,7 @@ export default function Cartcard({ data, removeFromCart }) {
                         </button>
 
                     </div>
-                    <button className="border-black shadow-sm border rounded-sm py-2 bg-black text-white px-2 font-semibold" onClick={()=>{removeFromCart(data.id)}} disabled={!data.inCart}>Remove Item</button>
+                    <button className="border-black shadow-sm border rounded-sm py-2 bg-black text-white px-2 font-semibold" onClick={()=>{removeFromCart(data.id)}}>Remove Item</button>
                 </div>
             </div>
         </div>
