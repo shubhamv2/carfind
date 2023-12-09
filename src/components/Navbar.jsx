@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCartShopping, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { FaCar } from "react-icons/fa";
 import { NavLink, Link, useLocation } from "react-router-dom"
 import { useCarContext } from "../context/carContext"
 import { useEffect } from "react";
@@ -17,18 +18,19 @@ export default function Navbar() {
     },[location])
     return (
         <header className="w-full h-16 shadow-md fixed bg-white z-50">
-            <nav className="flex mx-auto items-center w-full max-w-7xl h-full px-5 justify-between">
+            <nav className="flex mx-auto items-center w-full max-w-7xl h-full px-4 justify-between">
                 <div className="">
-                    <Link to="/" className="font-bold text-2xl py-3">
-                        Car<span className="">Find</span>
+                    <Link to="/" className="py-3 flex items-center text-xl font-semibold">
+                        <span className="text-3xl"><FaCar/></span >
+                        Car<span className=" text-violet-900">Find.com</span>
                     </Link>
                 </div>
                 <div className="text-lg flex">
                     <ul className="flex items-center justify-center">
                         <li><NavLink className="p-3" to="/">Home</NavLink></li>
                         <li><NavLink className="p-3" to="/about">About</NavLink></li>
-                        <li><NavLink className="p-3" to="/">Contact us</NavLink></li>
-                        <li><NavLink className="p-3" to="/">Services</NavLink></li>
+                        <li><NavLink className="p-3" to="/contact">Contact us</NavLink></li>
+                        <li><NavLink className="p-3" to="/services">Services</NavLink></li>
                     </ul>
                     <form className="flex ml-5" onSubmit={handleSearchSubmit}>
                         <input value={searchItems} onChange={(e)=>{

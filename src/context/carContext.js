@@ -8,6 +8,8 @@ export const carContext = createContext({
     removeFromCart:()=>{},
     searchItems:"",
     setSearchItemsFunc: ()=>{},
+    totalItemsCount:[],
+    changeTotalItems:()=>{}
 });
 
 

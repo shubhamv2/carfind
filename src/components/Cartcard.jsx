@@ -1,18 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
-export default function Cartcard({ data, removeFromCart }) {
-    const [updateIncDec, setUpdateIncDec] = useState(1);
-    const handleIncrement = () => {
-        setUpdateIncDec((prev) => prev + 1);
-    }
-    const handleDecrement = () => {
-        setUpdateIncDec((prev) => prev - 1);
-    }
+import { useCarContext } from "../context/carContext";
+export default function Cartcard({ data}) {
+    const {removeFromCart, changeTotalItems, totalItemsCount} = useCarContext();
     return (
-        <div className="flex rounded-lg overflow-hidden w-full border border-red-500">
-            <div className="w-3/4 h-72">
-                <img src={data.image} alt="" className="w-full object-cover h-full" />
+        <div className="flex rounded-lg overflow-hidden w-full h-64">
+            <div className=" w-2/3">
+                <img src={data.image} alt="" className=" object-cover w-full h-full" />
             </div>
             <div className="px-4">
                 <div className="">
@@ -23,13 +17,15 @@ export default function Cartcard({ data, removeFromCart }) {
                 </div>
                 <div className="my-4">
                     <div className="flex border justify-between items-center w-28 mb-3">
-                        <button onClick={handleDecrement} className="py-1 bg-red-500 text-white text-xl px-2 border" disabled={!updateIncDec}>
+                        <button onClick={()=>{
+                            changeTotalItems(false,data.id);
+                        }} className="py-1 bg-red-500 text-white text-xl px-2 border">
                             <FontAwesomeIcon icon={faMinus} />
                         </button>
                         <p className="text-xl">
-                            {updateIncDec}
+                            {totalItemsCount.find((item)=>item.id === data.id)?.count || 1}
                         </p>
-                        <button onClick={handleIncrement} className="py-1 px-2 text-xl bg-green-500 text-white">
+                        <button onClick={()=>{changeTotalItems(true,data.id)}} className="py-1 px-2 text-xl bg-green-500 text-white">
                             <FontAwesomeIcon icon={faPlus} />
                         </button>
 
