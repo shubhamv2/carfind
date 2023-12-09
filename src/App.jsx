@@ -1,75 +1,79 @@
 import { Navbar } from "./components";
 import { useState, useEffect } from "react";
 import CarContextProvider from './context/carContext';
-import { Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Footer from "./components/Footer";
 
 function App() {
     const [carData, setCarData] = useState([]);
-    const [cartItems, setCartItems] = useState(0);
-    const [searchItems, setSearchItem] = useState("");
+    const [searchItems, setSearchItems] = useState("");
+    const [cartItemsCount, setCartItemsCount] = useState(0);
+    const [addedCartData, setAddedCartData] = useState([]);
+    const addToCart = (id) => {
+        setCartItemsCount((prev) => prev + 1);
+        setAddedCartData((prevData) => {
+            return Array.isArray(prevData) ? [
+                ...prevData, ...carData.filter((item) => item.id === id)
+            ] : [...carData.filter((item) => item.id === id)]
+        });
 
-    function addToCart(id){
-        setCartItems((prev)=>prev+1);
-        setCarData((prevData)=>prevData.map((carInfo)=>carInfo.id === id?{...carInfo,inCart:true}:carInfo)); 
+        setCarData((prev) => prev.filter((item) => item.id != id));
+
     }
-    function removeFromCart(id){
-        setCartItems((prev)=>prev-1);
-        setCarData((prevData)=> prevData.map((carInfo)=>carInfo.id === id?{...carInfo, inCart: false}:carInfo));
-        console.log("cart item removed",id);
+    const removeFromCart = (id) => {
+        setCartItemsCount((prev) => prev - 1);
+        setCarData((prev) => [...addedCartData.filter((item) => item.id === id), ...prev]);
+        setAddedCartData((prevData) => prevData.filter((item) => item.id !== id));
+
     }
-    function setItems(value){
-        setSearchItem(value);
+
+
+    const setSearchItemsFunc = (searchQuery) => {
+        setSearchItems(searchQuery);
     }
-    
-    
     useEffect(() => {
-        const storedCars = localStorage.getItem('cars');
-        if(storedCars){
-            setCarData(JSON.parse(storedCars));
+        const getDataFromLocal = localStorage.getItem('carfinddata');
+        const parsedData = JSON.parse(getDataFromLocal)
+        if (parsedData) {
+            setCarData(parsedData.cardata);
+            setCartItemsCount(parsedData.itemscount);
+            setAddedCartData(parsedData.addedcartdata);
+            setCartItemsCount(parsedData.addedcartdata.length);
         }
-        else{
+        else {
+            async function fetchData() {
+                try {
+                    const res = await fetch('/data.json');
+                    const result = await res.json();
+                    setCarData(result.data);
+                    localStorage.setItem('carfinddata', JSON.stringify({ cardata: result.data, itemscount: 0, addedcartdata: [] }));
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }
             fetchData();
         }
-
-        const cartItemsString = localStorage.getItem('cartItems');
-
-        const cartParsedData = cartItemsString?JSON.parse(cartItemsString):undefined;
-
-        if(cartParsedData !== undefined){
-            setCartItems(parseInt(cartParsedData));
-        }
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch('/data.json');
-            const result = await response.json();
-            setCarData(result.data);
-            localStorage.setItem('cars',JSON.stringify(result.data));
-        }
-        catch (error) {
-            console.log("Error fetching data: ", error);
-        }
-    }
-
-
-
+    }, [])
     useEffect(() => {
-        // Use a callback function to ensure you get the latest state
-        setCartItems((prev) => {
-            localStorage.setItem('cartItems', JSON.stringify(prev));
-            return prev;
+        setAddedCartData((prevData) => {
+            localStorage.setItem('carfinddata', JSON.stringify({
+                cardata: [...carData],
+                addedcartdata: [...prevData],
+                itemscount: prevData.length,
+            }));
+            return prevData;
         });
-        setCarData((prev)=>{
-            localStorage.setItem('cars',JSON.stringify(prev));
-            return prev;
-        })
-    }, [cartItems,carData]);
+    }, [addedCartData, cartItemsCount]);
     return (
-
-        <CarContextProvider value={{carData,cartItems,addToCart,removeFromCart, searchItems, setItems}}>
+        <CarContextProvider value={{ carData, cartItemsCount, addedCartData, addToCart, removeFromCart, searchItems, setSearchItemsFunc }}>
             <Navbar />
-            <Outlet/>
+            <div className="w-full h-full min-h-screen pt-20">
+                <div className="max-w-7xl mx-auto px-4">
+                    <Outlet />
+                </div>
+            </div>
+            <Footer />
         </CarContextProvider>
 
     )
