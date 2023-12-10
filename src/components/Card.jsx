@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 export default function Card({ data, addToCart}) {
     return (
@@ -14,7 +15,8 @@ export default function Card({ data, addToCart}) {
                 </div>
             </Link>
             <div className='mt-2'>
-                <button onClick={()=>{addToCart(data.id)}} className="text-white font-semibold p-2 bg-black rounded-sm" disabled={data.inCart}>{!data.inCart ? "Add to cart" : "In cart"}</button>
+                <button onClick={()=>{
+                    addToCart(data.id)}} className="text-white font-semibold p-2 bg-black rounded-sm">{!data.inCart ? "Add to cart" : "In cart"}</button>
             </div>
         </div>
     )

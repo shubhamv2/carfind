@@ -6,8 +6,9 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import {Cart,Container} from './components'
 import About from './components/About.jsx';
 import ProductPage from './components/ProductPage.jsx';
-import Services from './components/Services.jsx';
 import Contact from './components/Contact.jsx';
+import Login from './components/Login&SignUp/SignUp.jsx';
+import SignUp from './components/Login&SignUp/SignUp.jsx';
 const router = createBrowserRouter([
   {
     path:'/',
@@ -30,15 +31,20 @@ const router = createBrowserRouter([
         element:<ProductPage/>
       },
       {
-        path:"services",
-        element:<Services/>
-      },
-      {
         path:"contact",
         element:<Contact/>
-      }
+      },
     ]
+  },
+  {
+    path:"/user/login",
+    element:<Login/>,
+  },
+  {
+    path:"/user/signup",
+    element:<SignUp/>
   }
+  
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

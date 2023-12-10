@@ -9,7 +9,9 @@ export const carContext = createContext({
     searchItems:"",
     setSearchItemsFunc: ()=>{},
     totalItemsCount:[],
-    changeTotalItems:()=>{}
+    changeTotalItems:()=>{},
+    isLogin: false,
+    setLogin:()=>{}
 });
 
 

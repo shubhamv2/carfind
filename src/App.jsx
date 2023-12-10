@@ -10,6 +10,7 @@ function App() {
     const [cartItemsCount, setCartItemsCount] = useState(0);
     const [addedCartData, setAddedCartData] = useState([]);
     const [totalItemsCount, setTotalItemsCount] = useState([]);
+    const [isLogin, setIsLogin] = useState(false);
 
     const addToCart = (id) => {
         setCartItemsCount((prev) => prev + 1);
@@ -43,6 +44,9 @@ function App() {
 
     const setSearchItemsFunc = (searchQuery) => {
         setSearchItems(searchQuery);
+    }
+    const setLogin = () =>{
+        setIsLogin((prev)=> !prev);
     }
     useEffect(() => {
         const getDataFromLocal = localStorage.getItem('carfinddata');
@@ -83,10 +87,10 @@ function App() {
         });
     }, [addedCartData, cartItemsCount, totalItemsCount]);
     return (
-        <CarContextProvider value={{ carData, cartItemsCount, addedCartData, addToCart, removeFromCart, searchItems, setSearchItemsFunc,totalItemsCount, changeTotalItems}}>
+        <CarContextProvider value={{ carData, cartItemsCount, addedCartData, addToCart, removeFromCart, searchItems, setSearchItemsFunc,totalItemsCount, changeTotalItems, isLogin, setLogin}}>
             <Navbar />
             <div className="w-full h-full min-h-screen pt-20">
-                <div className="max-w-7xl mx-auto px-4">
+                <div className="max-w-7xl mx-auto px-4 h-full">
                     <Outlet />
                 </div>
             </div>
